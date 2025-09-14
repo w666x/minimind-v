@@ -9,27 +9,22 @@
 | minimind-v |  [jingyaogong/minimind-v](https://github.com/jingyaogong/minimind-v.git) | 多模态大模型预训练微调一条龙demo | 5k/0.5k
 
 
-
 #### 本文目录
 
 ```sh
-1  minimind仓库介绍
-  1.0.1  功能说明
-  1.0.2  demo说明
-  1.0.3  仓库能干啥
-2  服务跑起来
-  2.1  常规模型训练
-    2.1.1  模型预训练
-    2.1.2  模型SFT微调
-    2.1.3  RLHF训练
-    2.1.4  LORA微调
-    2.1.5  推理模型
-  2.2  其他模型训练方式
-    2.2.1  模型蒸馏
-    2.2.2  tokenizer训练
+1  minimind-v仓库介绍
+  1.1  仓库简介
+  1.2  demo说明
+  1.3  仓库能干啥
+2  常规模型训练
+  2.1  模型预训练（学图像描述）
+  2.2  模型微调（学看图对话方式）
+  2.3  模型微调（多图对比）
 3  其他
-  3.1  数据说明
-  3.2  环境说明
+  3.1  开源数据说明
+  3.2  模型说明
+  3.3  faq
+  3.4  环境说明
 ```
 
 
@@ -454,7 +449,7 @@ CLIPModel(
 问题点：RuntimeError: DataLoader worker (pid 29034) is killed by signal: Bus error. It is possible that dataloaders workers are out of shared memory. Please try to raise your shared memory limit
 解决方案：
 # 1. 获取容器PID
-pid=$(docker inspect -f '{{.State.Pid}}' guest_gpu3)
+pid=$(docker inspect -f '{{.State.Pid}}' docker_test)
 
 # 2. 在容器命名空间内创建新共享内存
 sudo nsenter -m -t $pid -- sh -c "
@@ -469,7 +464,7 @@ sudo nsenter -m -t $pid -- sh -c "
 "
 
 # 3. 验证
-docker exec guest_gpu3 df -h /dev/shm
+docker exec docker_test df -h /dev/shm
 ```
 
 
@@ -490,27 +485,11 @@ imgae: nvidia/cuda:12.4.1-cudnn-devel-ubuntu20.04
 ```
 
 - 2. python环境
-    - python库版本，请看requirements_env.txt
+    - python库版本，请看requirements.txt
 
 
 ```sh
-vllm==0.8.5.post1
-streamlit==
+torch==2.2.2
+openai==1.59.6
+transformers==4.48.0
 ```
-
-
-- 3. 目录树
-    - 分别包括简单版本和明细版本
-
-```sh
-
-```
-
-
-<details>
-  <summary>详细目录树</summary>
-  <pre><code> 
-.
-
-  </code></pre>
-</details>
