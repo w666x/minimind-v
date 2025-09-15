@@ -77,7 +77,7 @@ python web_demo_vlm.py
 | 模块 | 功能 | 耗时/耗资源 | 数据demo | 损失函数
 |---|---|---|---|---
 | [无监督预训练](#模型预训练（学图像描述）) | 预训练从数据集中学习图片的通用知识 | 11G；60min/epoch/3卡 | {"conversations": [{"role": "user",  "content": "提供给定图像的简要描述。\n\<image\>"},{"role": "assistant",  "content": "橄榄油是自由使用的健康成分。"}],"image":"GCC_train_002582585.jpg"} |  CrossEntropyLoss
-| [模型微调](#模型微调（学看图对话方式）) | 指令微调从真实对话数据集中学习对图片提问的真实问答格式，更符合与人类的交流习惯。 | 14G；75min/epoch/3卡 | {"conversations": [{"role": "user", "content": "context: Source Image: \<image\> Target Image: \<image\> Instruction: What ithe correct image edit instruction that can transfrom the source image to target imag\<image\>"},  {"role": "assistant", "content": "take the people out of the back in the photo. Remove the two people behinthe woman in the white dress and the man in the blue suit. remove people behind thcouple in the centre"}],"image": "0.jpg, 1.jpg"} |  CrossEntropyLoss
+| [模型微调](#模型微调（学看图对话方式）) | 指令微调从真实对话数据集中学习对图片提问的真实问答格式，更符合与人类的交流习惯。 | 14G；75min/epoch/3卡 | {"conversations": [{"role": "user", "content": "context: Source Image: \<image\> Target Image: \<image\> Instruction: What ithe correct image edit instruction that can transfrom the source image to target image"},  {"role": "assistant", "content": "take the people out of the back in the photo. Remove the two people behinthe woman in the white dress and the man in the blue suit. remove people behind thcouple in the centre"}],"image": "0.jpg, 1.jpg"} |  CrossEntropyLoss
 
 
 
@@ -105,7 +105,7 @@ python eval_vlm.py --load 0 --model_mode 0 --hidden_size 768 --num_hidden_layers
 - 2. 下载模型权重文件 & 数据文件
     - 对lfs感兴趣的，可参考文章 【git-lfs】部分
     - 下载clip模型到 ./model/vision_model 目录下
-    - 下载纯语言模型权重到 ./out 目录下（作为训练VLM的基座语言模型）
+    - 下载纯语言模型权重到 ./out 目录下（作为训练VLM的基座语言模型，一般可以选择有趣的项目 大模型训练part通关minimind训练得到的full_sft_768_moe.pth，直接下载的llm语言模型，加载模型的时候可以对比下模型架构和权重的key是否可以对上）
     - 下载数据集到 ./dataset 目录下
 
 ```sh
@@ -313,7 +313,7 @@ python eval_vlm.py --load 0 --model_mode 1 --use_multi 2 --hidden_size 768 --num
   "conversations": [
     {
       "role": "user",
-      "content": "context: Source Image: <image> Target Image: <image> Instruction: What is the correct image edit instruction that can transfrom the source image to target image?<image>"
+      "content": "context: Source Image: <image> Target Image: <image> Instruction: What is the correct image edit instruction that can transfrom the source image to target image?"
     },
     {
       "role": "assistant",
@@ -324,7 +324,7 @@ python eval_vlm.py --load 0 --model_mode 1 --use_multi 2 --hidden_size 768 --num
 }
 
 # 输入到模型的文本, prompt
-'<|im_start|>system\nYou are a helpful assistant<|im_end|>\n<|im_start|>user\ncontext: Source Image: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Target Image: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Instruction: What is the correct image edit instruction that can transfrom the source image to target image?@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@<|im_end|>\n<|im_start|>assistant\ntake the people out of the back in the photo. Remove the two people behind the woman in the white dress and the man in the blue suit. remove people behind the couple in the centre<|im_end|>\n'
+'<|im_start|>system\nYou are a helpful assistant<|im_end|>\n<|im_start|>user\ncontext: Source Image: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Target Image: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Instruction: What is the correct image edit instruction that can transfrom the source image to target image?<|im_end|>\n<|im_start|>assistant\ntake the people out of the back in the photo. Remove the two people behind the woman in the white dress and the man in the blue suit. remove people behind the couple in the centre<|im_end|>\n'
 ```
 
 
