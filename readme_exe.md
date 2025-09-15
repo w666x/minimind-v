@@ -43,6 +43,7 @@
         - 处理文字：你的问题（比如“图片里是什么？”）也被转成token。
         - 融合图文：图片token通过简单的数学运算（线性变换）调整到跟文字token“说同一种语言”。这样 AI 就能同时处理两者。
         - 输出：这些token被送进语言模型，生成回答，比如“图片里是一只狗在公园玩”。
+    3. 回复【minimind】获取git地址
 
 
 
@@ -75,8 +76,8 @@ python web_demo_vlm.py
 
 | 模块 | 功能 | 耗时/耗资源 | 数据demo | 损失函数
 |:-|:-|:-|:-|:-
-| [无监督预训练](#模型预训练) | 模型自己从大量文本中总结规律学习知识点 | 1.6G；15min/epoch/4卡 | {'text': '<\|im_start\|>鉴别一组中文文章的风格和特点，例如官方、口语、文言等。需要提供样例文章才能准确鉴别不同的风格和特点。<\|im_end\|> <\|im_start\|>好的，现在帮我查一下今天的天气怎么样?今天的天气依据地区而异。请问你需要我帮你查询哪个地区的天气呢？<\|im_end\|>'} |  CrossEntropyLoss
-| [SFT模型微调](#模型SFT微调) | 把半成品LLM施加一个自定义的聊天模板进行微调 | 7.5G；12min/epoch/4卡 | {"conversations": [{"role": "user","content": "请告诉我在中国古代的“四大发明”是什么？"},{"role": "assistant","content": "中国古代的“四大发明”是指造纸术、印刷术、火药和指南针。"}]} |  CrossEntropyLoss
+| [无监督预训练](#模型预训练（学图像描述）) | 预训练从数据集中学习图片的通用知识 | 11G；60min/epoch/3卡 | {"conversations": [{"role": "user",  "content": "提供给定图像的简要描述。\n\<image\>"},{"role": "assistant",  "content": "橄榄油是自由使用的健康成分。"}],"image":"GCC_train_002582585.jpg"} |  CrossEntropyLoss
+| [模型微调](#模型微调（学看图对话方式）) | 指令微调从真实对话数据集中学习对图片提问的真实问答格式，更符合与人类的交流习惯。 | 14G；75min/epoch/3卡 | {"conversations": [{"role": "user", "content": "context: Source Image: \<image\> Target Image: \<image\> Instruction: What ithe correct image edit instruction that can transfrom the source image to target imag\<image\>"},  {"role": "assistant", "content": "take the people out of the back in the photo. Remove the two people behinthe woman in the white dress and the man in the blue suit. remove people behind thcouple in the centre"}],"image": "0.jpg, 1.jpg"} |  CrossEntropyLoss
 
 
 
