@@ -101,7 +101,7 @@ def init_model(model_config: VLMConfig):
     tokenizer = AutoTokenizer.from_pretrained('../model', use_fast=True)
     moe_path = '_moe' if model_config.use_moe else ''
     # 加载纯语言模型权重
-    ckp = f'{args.save_dir}/llm_{model_config.hidden_size}{moe_path}.pth'
+    ckp = f'{args.save_dir}/full_sft_{model_config.hidden_size}{moe_path}.pth'
     model = MiniMindVLM(model_config, vision_model_path="../model/vision_model/clip-vit-base-patch16")
     state_dict = torch.load(ckp, map_location=args.device)
     model.load_state_dict(state_dict, strict=False)
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     model_config = VLMConfig(hidden_size=args.hidden_size, num_hidden_layers=args.num_hidden_layers,
-                             max_seq_len=args.max_seq_len)
+                             max_seq_len=args.max_seq_len, use_moe=args.use_moe)
     max_seq_len = model_config.max_seq_len
     args.save_dir = os.path.join(args.out_dir)
     os.makedirs(args.save_dir, exist_ok=True)
