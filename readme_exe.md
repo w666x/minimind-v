@@ -5,7 +5,7 @@
 
 
 | git仓库 | 地址 | 主要功能 | star/fork数
-|:-|:-|:-|:-
+|--|--|--|--
 | minimind-v |  [jingyaogong/minimind-v](https://github.com/jingyaogong/minimind-v.git) | 多模态大模型预训练微调一条龙demo | 5k/0.5k
 
 
@@ -33,17 +33,17 @@
 
 #### 仓库简介
 
-- 项目是干啥的
-    1. 极简VLM模型架构与训练:
-        - 项目同时包含了VLM大模型的极简结构、数据集清洗、预训练 (Pretrain)、监督微调 (SFT)等全过程代码。 是一个开源VLM模型的最小实现
-        - **训练VLM模型就像教小孩学看图说话，给它提供例子，慢慢引导它学习规律。**
-    2. MiniMind-V 是基于一个叫 MiniMind 的文字模型，加上一个视觉编码器（把图片变成 AI 能懂的数据），让它能同时处理文字和图片。简单来说，MiniMind-V 接收文字和图片，处理后生成回答。流程是这样的：
-        - 输入：你给它文字和图片。比如，问“图片里是什么？”并附上一张图。图片在代码里用特殊符号（像“@@@…@@@” 196个）表示。
-        - 处理图片：图片被送进一个叫 CLIP-ViT-Base-Patch16 的视觉编码器。它把图片切成小块（像拼图），转化成一串数字（token），AI 就能理解了。
-        - 处理文字：你的问题（比如“图片里是什么？”）也被转成token。
-        - 融合图文：图片token通过简单的数学运算（线性变换）调整到跟文字token“说同一种语言”。这样 AI 就能同时处理两者。
-        - 输出：这些token被送进语言模型，生成回答，比如“图片里是一只狗在公园玩”。
-    3. 回复【minimind】获取git地址
+
+- 1. 极简VLM模型架构与训练:
+    - 项目同时包含了VLM大模型的极简结构、数据集清洗、预训练 (Pretrain)、监督微调 (SFT)等全过程代码。 是一个开源VLM模型的最小实现
+    - **训练VLM模型就像教小孩学看图说话，给它提供例子，慢慢引导它学习规律。**
+- 2. MiniMind-V 是基于一个叫 MiniMind 的文字模型，加上一个视觉编码器（把图片变成 AI 能懂的数据），让它能同时处理文字和图片。简单来说，MiniMind-V 接收文字和图片，处理后生成回答。流程是这样的：
+    - 输入：你给它文字和图片。比如，问“图片里是什么？”并附上一张图。图片在代码里用特殊符号（像“@@@…@@@” 196个）表示。
+    - 处理图片：图片被送进一个叫 CLIP-ViT-Base-Patch16 的视觉编码器。它把图片切成小块（像拼图），转化成一串数字（token），AI 就能理解了。
+    - 处理文字：你的问题（比如“图片里是什么？”）也被转成token。
+    - 融合图文：图片token通过简单的数学运算（线性变换）调整到跟文字token“说同一种语言”。这样 AI 就能同时处理两者。
+    - 输出：这些token被送进语言模型，生成回答，比如“图片里是一只狗在公园玩”。
+- 3. 回复【minimind】获取git地址
 
 
 
@@ -63,8 +63,8 @@ cd ./scripts
 python web_demo_vlm.py
 ```
 
-![minimindv_demo_streamlit](./images/minimind_v_demo_streamlit.png)
-![minimind_v_demo_cmd](./images/minimind_v_demo_cmd.png)
+![minimindv_demo_streamlit](https://cdn.jsdelivr.net/gh/w666x/image/git/minimind_v_demo_streamlit.png)
+![minimind_v_demo_cmd](https://cdn.jsdelivr.net/gh/w666x/image/git/minimind_v_demo_cmd.png)
 
 
 
@@ -75,7 +75,7 @@ python web_demo_vlm.py
 
 
 | 模块 | 功能 | 耗时/耗资源 | 数据demo | 损失函数
-|:-|:-|:-|:-|:-
+|---|---|---|---|---
 | [无监督预训练](#模型预训练（学图像描述）) | 预训练从数据集中学习图片的通用知识 | 11G；60min/epoch/3卡 | {"conversations": [{"role": "user",  "content": "提供给定图像的简要描述。\n\<image\>"},{"role": "assistant",  "content": "橄榄油是自由使用的健康成分。"}],"image":"GCC_train_002582585.jpg"} |  CrossEntropyLoss
 | [模型微调](#模型微调（学看图对话方式）) | 指令微调从真实对话数据集中学习对图片提问的真实问答格式，更符合与人类的交流习惯。 | 14G；75min/epoch/3卡 | {"conversations": [{"role": "user", "content": "context: Source Image: \<image\> Target Image: \<image\> Instruction: What ithe correct image edit instruction that can transfrom the source image to target imag\<image\>"},  {"role": "assistant", "content": "take the people out of the back in the photo. Remove the two people behinthe woman in the white dress and the man in the blue suit. remove people behind thcouple in the centre"}],"image": "0.jpg, 1.jpg"} |  CrossEntropyLoss
 
@@ -136,7 +136,7 @@ git clone https://www.modelscope.cn/datasets/gongjy/minimind-v_dataset.git
 
 
 | 数据量 | 模型大小 | 模型磁盘占用 | 显存占用 | 下降速度 | 训练时长/epoch | GPU数
-|:-|:-|:-|:-|:-|:-|:-
+|---|---|---|---|---|---|---
 | 595375 | 0.591M | 209MB | 11G |  loss:7.793 → loss:7.306 | 60min | 3卡
 | 595375 | 0.591M | 209MB | 11G |   | 300min | 1卡
 
@@ -193,7 +193,7 @@ loss = (loss * loss_mask).sum() / loss_mask.sum()
     - 为啥是196呢， **任何图像都被clip模型encoder为196×768维的token**
 
 
-![input](./images/minimind-v-input.png)
+![input](https://cdn.jsdelivr.net/gh/w666x/image/git/minimind-v-input.png)
 
 
 
@@ -223,7 +223,7 @@ python eval_vlm.py --load 0 --model_mode 1 --hidden_size 768 --num_hidden_layers
 
 
 | 数据量 | 模型大小 | 模型磁盘占用 | 显存占用 | 下降速度 | 训练时长/epoch | GPU数
-|:-|:-|:-|:-|:-|:-|:-
+|---|---|---|---|---|---|---
 | 300k | 104M | 209M | 14G | loss:8.474 → loss:4.502  | 75min | 3卡
 
 
@@ -297,7 +297,7 @@ python eval_vlm.py --load 0 --model_mode 1 --use_multi 2 --hidden_size 768 --num
 
 
 | 数据量 | 模型大小 | 模型磁盘占用 | 显存占用 | 下降速度 | 训练时长/epoch | GPU数
-|:-|:-|:-|:-|:-|:-|:-
+|---|---|---|---|---|---|---
 | 3K | 104M | 209MB | 16G | loss:8.671 → loss:5.183 | 3min | 3卡
 
 
@@ -309,7 +309,6 @@ python eval_vlm.py --load 0 --model_mode 1 --use_multi 2 --hidden_size 768 --num
 
 ```sh
 # 原文
-```json lines
 {
   "conversations": [
     {
@@ -357,8 +356,8 @@ python eval_vlm.py --load 0 --model_mode 1 --use_multi 2 --hidden_size 768 --num
 
 
 
-![LLM-structure](./images/VLM-structure.png)
-![LLM-structure](./images/VLM-structure-moe.png)
+![LLM-structure](https://cdn.jsdelivr.net/gh/w666x/image/git/VLM-structure.png)
+![LLM-structure](https://cdn.jsdelivr.net/gh/w666x/image/git/VLM-structure-moe.png)
 
 
 
@@ -373,7 +372,7 @@ python eval_vlm.py --load 0 --model_mode 1 --use_multi 2 --hidden_size 768 --num
 
 
 
-![llava-structure](./images/llava-structure.png)
+![llava-structure](https://cdn.jsdelivr.net/gh/w666x/image/git/llava-structure.png)
 
 
 
