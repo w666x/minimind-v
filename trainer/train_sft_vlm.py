@@ -157,7 +157,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     model_config = VLMConfig(hidden_size=args.hidden_size, num_hidden_layers=args.num_hidden_layers,
-                             max_seq_len=args.max_seq_len)
+                             max_seq_len=args.max_seq_len, use_moe=args.use_moe)
     max_seq_len = model_config.max_seq_len
     args.save_dir = os.path.join(args.out_dir)
     os.makedirs(args.save_dir, exist_ok=True)
